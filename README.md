@@ -1,12 +1,12 @@
-## 75 Hard
+# 75 Hard
 
-# Graphical Structure
+## Graphical Structure
 
-# Requirements
+## Requirements
 
-# Technology Used
+## Technology Used
 
-# How to Run
+## How to Run
 
 
 
