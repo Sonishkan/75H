@@ -6,7 +6,6 @@ import Home from './views/pages/Home';
 import PageNotFound from './views/pages/PageNotFound';
 
 //import Index from "./views/Index.js";
-import LandingPage from "./views/pages/LandingPage.js";
 import RegisterPage from "./views/pages/RegisterPage.js";
 import ProfilePage from "./views/pages/ProfilePage.js";
 
@@ -17,7 +16,6 @@ function RouteLoader() {
           <Route path="/" element={<Home />} />
           <Route path="/*" element={<PageNotFound />} />
           
-          <Route path="/landing" element={<LandingPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>

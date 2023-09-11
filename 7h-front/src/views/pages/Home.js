@@ -48,11 +48,11 @@ export default function Index() {
   return (
     <>
       <IndexNavbar />
+
       <div className="wrapper">
         <PageHeader />
         <div className="main">
           
-
 
           <JavaScript />
 
