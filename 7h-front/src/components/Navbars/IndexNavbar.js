@@ -16,8 +16,11 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import classnames from "classnames";
+
+
+
 
 // reactstrap components
 import {
@@ -42,6 +45,7 @@ import {
 
 } from "reactstrap";
 
+
 export default function IndexNavbar() {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [collapseOut, setCollapseOut] = React.useState("");
@@ -49,12 +53,27 @@ export default function IndexNavbar() {
   const [emailFocus, setEmailFocus] = React.useState(false);
   const [passwordFocus, setPasswordFocus] = React.useState(false);
   const [color, setColor] = React.useState("navbar-transparent");
+  const [buttonText, setButtonText] = React.useState("Sign In");
+  const [disableClick, setDisableClick] = React.useState(false);
+
   React.useEffect(() => {
     window.addEventListener("scroll", changeColor);
     return function cleanup() {
       window.removeEventListener("scroll", changeColor);
     };
   }, []);
+
+    const location = useLocation();
+    React.useEffect(() => {
+      console.log(location.pathname);
+      if (location.pathname === "/profile") { {/* if the path is /profile, then set the button to SIGN OUT */}
+        setButtonText("Sign Out");
+        setDisableClick(true);        
+      } else {
+        setButtonText("Sign In");
+        setDisableClick(false);
+      }
+    });
   const changeColor = () => {
     if (
       document.documentElement.scrollTop > 99 ||
@@ -68,16 +87,7 @@ export default function IndexNavbar() {
       setColor("navbar-transparent");
     }
   };
-  const toggleCollapse = () => {
-    document.documentElement.classList.toggle("nav-open");
-    setCollapseOpen(!collapseOpen);
-  };
-  const onCollapseExiting = () => {
-    setCollapseOut("collapsing-out");
-  };
-  const onCollapseExited = () => {
-    setCollapseOut("");
-  };
+
   return (
     <Navbar className={"fixed-top " + color} color-on-scroll="100" expand="lg">
       <Container>
@@ -91,12 +101,13 @@ export default function IndexNavbar() {
           </UncontrolledTooltip>
             
           <Button
+            id="profileButton"
             className="navbar-toggler"
             color="default"
             onClick={() => setFormModal(true)}
-            
+            disabled={disableClick} // Disable the button when disableClick is true
           >
-            <i className="tim-icons icon-single-02" /> Sign In
+            <i className="tim-icons icon-single-02" /> {buttonText}
           </Button>
 
           
@@ -110,8 +121,9 @@ export default function IndexNavbar() {
                 className="nav-link d-none d-lg-block"
                 color="default"
                 onClick={() => setFormModal(true)}
+                disabled={disableClick} // Disable the button when disableClick is true
               >
-                <i className="tim-icons icon-single-02" /> Sign In
+                <i className="tim-icons icon-single-02" /> {buttonText}
               </Button>
             </NavItem>
           </Nav>

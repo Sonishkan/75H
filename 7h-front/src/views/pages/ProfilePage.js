@@ -19,6 +19,9 @@ import React from "react";
 import classnames from "classnames";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
+
+
+
 // reactstrap components
 import {
   Button,
@@ -44,7 +47,8 @@ import {
 } from "reactstrap";
 
 // core components
-import ExamplesNavbar from "../../components/Navbars/ExamplesNavbar.js";
+import IndexNavbar from "../../components/Navbars/IndexNavbar.js";
+import PageHeader from "../../components/PageHeader/PageHeader.js";
 import Footer from "../../components/Footer/Footer.js";
 
 const carouselItems = [
@@ -91,7 +95,7 @@ export default function ProfilePage() {
   }, []);
   return (
     <>
-      <ExamplesNavbar />
+      <IndexNavbar />
       <div className="wrapper">
         <div className="page-header">
           <img
