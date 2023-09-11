@@ -89,41 +89,20 @@ export default function IndexNavbar() {
           <UncontrolledTooltip placement="bottom" target="navbar-brand">
             Project made by Sonish Kandel
           </UncontrolledTooltip>
-          <button
-            aria-expanded={collapseOpen}
-            className="navbar-toggler navbar-toggler"
-            onClick={toggleCollapse}
+            
+          <Button
+            className="navbar-toggler"
+            color="default"
+            onClick={() => setFormModal(true)}
+            
           >
-            <span className="navbar-toggler-bar bar1" />
-            <span className="navbar-toggler-bar bar2" />
-            <span className="navbar-toggler-bar bar3" />
-          </button>
+            <i className="tim-icons icon-single-02" /> Sign In
+          </Button>
+
+          
         </div>
-        <Collapse
-          className={"justify-content-end " + collapseOut}
-          navbar
-          isOpen={collapseOpen}
-          onExiting={onCollapseExiting}
-          onExited={onCollapseExited}
-        >
-          <div className="navbar-collapse-header">
-            <Row>
-              <Col className="collapse-brand" xs="6">
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  BLK•React
-                </a>
-              </Col>
-              <Col className="collapse-close text-right" xs="6">
-                <button
-                  aria-expanded={collapseOpen}
-                  className="navbar-toggler"
-                  onClick={toggleCollapse}
-                >
-                  <i className="tim-icons icon-simple-remove" />
-                </button>
-              </Col>
-            </Row>
-          </div>
+        
+          
           <Nav navbar>
             
             <NavItem>
@@ -136,7 +115,7 @@ export default function IndexNavbar() {
               </Button>
             </NavItem>
           </Nav>
-        </Collapse>
+
 
         {/* Sign In Modal */}
         <Modal
@@ -149,31 +128,11 @@ export default function IndexNavbar() {
                 <i className="tim-icons icon-simple-remove text-white" />
               </button>
               <div className="text-muted text-center ml-auto mr-auto">
-                <h3 className="mb-0">Sign in with</h3>
+                <h3 className="mb-0">Sign in</h3>
               </div>
             </div>
             <div className="modal-body">
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <img alt="..." src={require("../../assets/img/github.svg")} />
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <img alt="..." src={require("../../assets/img/google.svg")} />
-                </Button>
-              </div>
-              <div className="text-center text-muted mb-4 mt-3">
-                <small>Or sign in with credentials</small>
-              </div>
+
               <Form role="form">
                 <FormGroup className="mb-3">
                   <InputGroup
