@@ -46,9 +46,6 @@ import {
   UncontrolledCarousel,
 } from "reactstrap";
 
-// core components
-import IndexNavbar from "../../components/Navbars/IndexNavbar.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const carouselItems = [
   {
@@ -70,7 +67,11 @@ const carouselItems = [
 
 let ps = null;
 
-export default function ProfilePage() {
+
+
+export default function ProfilePage(props) {
+
+
   const [tabs, setTabs] = React.useState(1);
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -100,7 +101,6 @@ export default function ProfilePage() {
     };
   return (
     <>
-      <IndexNavbar />
       <div className="wrapper">
         <div className="page-header">
           <img
@@ -285,8 +285,7 @@ export default function ProfilePage() {
             </Row>
           </Container>
         </div>
-        
-        <Footer />
+
       </div>
     </>
   );

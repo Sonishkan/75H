@@ -21,22 +21,45 @@ import React from "react";
 import IndexNavbar from "../../components/Navbars/IndexNavbar.js";
 import PageHeader from "../../components/PageHeader/PageHeader.js";
 import Footer from "../../components/Footer/Footer.js";
+import ProfilePage from "./ProfilePage.js";
+import {Amplify,  Hub } from "aws-amplify";
+import config from '../../aws-exports.js';
+
+
 
 // sections for this page/view
-import Basics from "../IndexSections/Basics.js";
-import Navbars from "../IndexSections/Navbars.js";
-import Tabs from "../IndexSections/Tabs.js";
-import Pagination from "../IndexSections/Pagination.js";
-import Notifications from "../IndexSections/Notifications.js";
-import Typography from "../IndexSections/Typography.js";
 import JavaScript from "../IndexSections/JavaScript.js";
-import NucleoIcons from "../IndexSections/NucleoIcons.js";
 import Signup from "../IndexSections/Signup.js";
 import Examples from "../IndexSections/Examples.js";
-//import Download from "../IndexSections/Download.js";
 
+Amplify.configure(config);
 
-export default function Index() {
+export default function Index(props) {
+
+  const [currentUser, setCurrentUser] = React.useState(null) ;
+  
+  React.useEffect(() => {
+    {
+      Hub.listen("auth", (event) => {
+        const { payload } = event;
+        console.log("A new auth event has happened: ", event);
+        if (payload.event === "signIn" || payload.event === "autoSignIn") {
+          setCurrentUser (event.payload.data)
+          console.log("a user has signed in!", currentUser);
+          
+        }
+        else if (payload.event === "signOut") {
+          
+          setCurrentUser(null)
+          console.log("a user has signed out!", currentUser);          
+        }
+      })
+      console.log("currentUser", currentUser);
+      
+    }
+
+  }, []);
+
   React.useEffect(() => {
     document.body.classList.toggle("index-page");
     // Specify how to clean up after this effect:
@@ -47,20 +70,26 @@ export default function Index() {
   
   return (
     <>
-      <IndexNavbar />
-
+      <IndexNavbar currentUser={currentUser}/>
       <div className="wrapper">
-        <PageHeader />
+        
         <div className="main">
-          
-
-          <JavaScript />
-
-          <Examples/>
-          <Signup />
+          {currentUser !== null ? (
+            // If currentUser is not null (user is logged in), show ProfilePage
+            <ProfilePage />
+          ) : (
+            // If currentUser is null (user is not logged in), show other components
+            <>
+              <PageHeader />
+              <JavaScript />
+              <Examples />
+              <Signup />
+            </>
+          )}
         </div>
         <Footer />
       </div>
     </>
   );
+  
 }

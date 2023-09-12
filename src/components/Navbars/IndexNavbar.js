@@ -16,6 +16,8 @@
 
 */
 import React from "react";
+import { Auth , Hub} from 'aws-amplify';
+
 import { Link, useLocation } from "react-router-dom";
 import classnames from "classnames";
 
@@ -46,7 +48,7 @@ import {
 } from "reactstrap";
 
 
-export default function IndexNavbar() {
+export default function IndexNavbar(props) {
 
   const [formModal, setFormModal] = React.useState(false);
   const [emailFocus, setEmailFocus] = React.useState(false);
@@ -55,6 +57,37 @@ export default function IndexNavbar() {
   const [buttonText, setButtonText] = React.useState("Sign In");
   const [disableClick, setDisableClick] = React.useState(false);
 
+
+  let [email, setEmail] = React.useState("");
+  let [password, setPassword] = React.useState("");
+
+  const handleSignOut = async () => {
+    try {
+      Auth.signOut({ global: true }); // Wait for the signOut method to complete
+      // Perform any additional actions after successful sign out
+      console.log('User signed out successfully', props.currentUser);
+      props.currentUser = null;
+      console.log(props.currentUser, "props.currentUser");
+    } catch (error) {
+      // Handle any sign out errors here
+      console.error('Sign out error:', error);
+    }
+  };
+
+  let handleSignIn = async function (event) {
+    try {
+
+        event.preventDefault();
+        let response = await Auth.signIn(email, password);
+        console.log(response, "response");
+        setFormModal(false);
+        
+    } catch (error) {
+        console.log(error, "error signing in");
+        alert("Incorrect username or password");
+    }
+  };
+
   React.useEffect(() => {
     window.addEventListener("scroll", changeColor);
     return function cleanup() {
@@ -62,21 +95,11 @@ export default function IndexNavbar() {
     };
   }, []);
 
-    const location = useLocation();
-    React.useEffect(() => {
-      console.log(location.pathname);
-      if (location.pathname === "/profile") { {/* if the path is /profile, then set the button to SIGN OUT */}
-        setButtonText("Sign Out");
-        setDisableClick(true);        
-      } else {
-        setButtonText("Sign In");
-        setDisableClick(false);
-      }
-    });
   const changeColor = () => {
     if (
       document.documentElement.scrollTop > 99 ||
       document.body.scrollTop > 99
+      
     ) {
       setColor("bg-info");
     } else if (
@@ -86,6 +109,8 @@ export default function IndexNavbar() {
       setColor("navbar-transparent");
     }
   };
+  console.log("props.currentUser", props.currentUser);
+
 
   return (
     <Navbar className={"fixed-top " + color} color-on-scroll="100" expand="lg">
@@ -98,33 +123,61 @@ export default function IndexNavbar() {
           <UncontrolledTooltip placement="bottom" target="navbar-brand">
             Project made by Sonish Kandel
           </UncontrolledTooltip>
-            
-          <Button
-            id="profileButton"
-            className="navbar-toggler"
-            color="default"
-            onClick={() => setFormModal(true)}
-            disabled={disableClick} // Disable the button when disableClick is true
-          >
-            <i className="tim-icons icon-single-02" /> {buttonText}
-          </Button>
+          
+          {props.currentUser !== null ? (
+            // Render the sign-out button when props is not null
+            <Button
+              id="profileButton"
+              className="navbar-toggler"
+              color="default"
+              onClick={handleSignOut}
+
+            >
+              
+              <i className="tim-icons icon-single-02" /> Sign Out
+            </Button>
+          ) : (
+            // Render the sign-in button when props is null
+            <Button
+              id="profileButton"
+              className="navbar-toggler"
+              color="default"
+              onClick={() => setFormModal(true)}
+
+            >
+              <i className="tim-icons icon-single-02" /> Sign In
+            </Button>
+          )}
 
           
         </div>
         
           
           <Nav navbar>
+          {props.currentUser !== null ? (
             
             <NavItem>
               <Button
+                id="profileButton"
+                className="nav-link d-none d-lg-block"
+                color="default"
+                onClick={handleSignOut}
+              >
+                <i className="tim-icons icon-single-02" /> Sign Out
+              </Button>
+            </NavItem>
+          ) : (
+            <NavItem>
+              <Button
+                id="profileButton"
                 className="nav-link d-none d-lg-block"
                 color="default"
                 onClick={() => setFormModal(true)}
-                disabled={disableClick} // Disable the button when disableClick is true
               >
-                <i className="tim-icons icon-single-02" /> {buttonText}
+                <i className="tim-icons icon-single-02" /> Sign In
               </Button>
             </NavItem>
+          )}
           </Nav>
 
 
@@ -161,6 +214,7 @@ export default function IndexNavbar() {
                       type="email"
                       onFocus={(e) => setEmailFocus(true)}
                       onBlur={(e) => setEmailFocus(false)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </InputGroup>
                 </FormGroup>
@@ -180,6 +234,7 @@ export default function IndexNavbar() {
                       type="password"
                       onFocus={(e) => setPasswordFocus(true)}
                       onBlur={(e) => setPasswordFocus(false)}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </InputGroup>
                 </FormGroup>
@@ -191,7 +246,7 @@ export default function IndexNavbar() {
                   </Label>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button className="my-4" color="primary" type="button" onClick={handleSignIn}>
                     Sign in
                   </Button>
                 </div>
