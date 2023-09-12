@@ -170,6 +170,8 @@ export default function ProfilePage() {
                             e.preventDefault();
                             setTabs(2);
                           }}
+                          disabled={true}
+                          style={{ color: 'gray' }}
                           href="#pablo"
                         >
                           Individual
@@ -210,39 +212,75 @@ export default function ProfilePage() {
         <div className="section">
           <Container>
             <Row className="justify-content-between">
-              <Col md="6">
-                <Row className="justify-content-between align-items-center">
-                  <UncontrolledCarousel items={carouselItems} />
-                </Row>
+              <Col md="2">
+                
+              
+                <div className="btn-wrapper pt-4">
+                <Row md="1">
+                    <Button
+                      className="btn-simple"
+                      color="primary"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="tim-icons icon-book-bookmark" /> Bookmark
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      color="info"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="tim-icons icon-bulb-63" /> Bookmark
+                    </Button>
+
+                    <Button
+                      className="btn-simple"
+                      color="info"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="tim-icons icon-bulb-63" /> Bookmark
+                    </Button>
+                    
+                    <Button
+                      className="btn-simple"
+                      color="info"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="tim-icons icon-bulb-63" /> Bookmark
+                    </Button>
+                    
+                    <Button
+                      className="btn-simple"
+                      color="info"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="tim-icons icon-bulb-63" /> Bookmark
+                    </Button>
+                    </Row>
+                    
+                    
+                  </div>
+                  
+                  
               </Col>
-              <Col md="5">
-                <h1 className="profile-title text-left">Projects</h1>
+              <Col md="6">
+                <h1 className="profile-title text-left">Stats Tracker</h1>
                 <h5 className="text-on-back">02</h5>
                 <p className="profile-description text-left">
-                  An artist of considerable range, Ryan — the name taken by
-                  Melbourne-raised, Brooklyn-based Nick Murphy — writes,
-                  performs and records all of his own music, giving it a warm,
-                  intimate feel with a solid groove structure. An artist of
-                  considerable range.
+                Track your daily progress in the 75 Hard Challenge and watch 
+                your determination and resilience grow. Nutrition, Workouts, 
+                Water Intake, and Reading are your four pillars to success. 
+                Each button represents a chance to inch closer to your goal 
+                of completing the challenge. Keep an eye on the progress bars 
+                as they fill up from 0 to 75. With consistency and dedication, 
+                you'll soon reach new heights. Let's make today count!
                 </p>
-                <div className="btn-wrapper pt-3">
-                  <Button
-                    className="btn-simple"
-                    color="primary"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <i className="tim-icons icon-book-bookmark" /> Bookmark
-                  </Button>
-                  <Button
-                    className="btn-simple"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <i className="tim-icons icon-bulb-63" /> Check it!
-                  </Button>
-                </div>
+
+                
               </Col>
             </Row>
           </Container>
