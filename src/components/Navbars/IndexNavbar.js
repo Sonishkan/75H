@@ -60,6 +60,7 @@ export default function IndexNavbar(props) {
 
   let [email, setEmail] = React.useState("");
   let [password, setPassword] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState();
 
   const handleSignOut = async () => {
     try {
@@ -67,7 +68,7 @@ export default function IndexNavbar(props) {
       // Perform any additional actions after successful sign out
       console.log('User signed out successfully', props.currentUser);
       props.currentUser = null;
-      console.log(props.currentUser, "props.currentUser");
+      //console.log(props.currentUser, "props.currentUser");
     } catch (error) {
       // Handle any sign out errors here
       console.error('Sign out error:', error);
@@ -79,12 +80,28 @@ export default function IndexNavbar(props) {
 
         event.preventDefault();
         let response = await Auth.signIn(email, password);
-        console.log(response, "response");
+        //console.log(response, "response");
         setFormModal(false);
         
     } catch (error) {
-        console.log(error, "error signing in");
-        alert("Incorrect username or password");
+        //console.log(error.message, "error signing in");
+
+        
+
+        if (error.message && error.message.includes(':')) {
+          const errorMessageParts = error.message.split(':');
+          if (errorMessageParts.length > 1) {
+            setErrorMessage(errorMessageParts[1].trim());
+          }
+        } else {
+          setErrorMessage(error.message);
+        }
+
+        if (error.message && error.message.includes('Custom auth lambda trigger is not configured for the user pool.')) {
+          setErrorMessage('Password cannot be empty');
+        }
+
+        
     }
   };
 
@@ -109,7 +126,7 @@ export default function IndexNavbar(props) {
       setColor("navbar-transparent");
     }
   };
-  console.log("props.currentUser", props.currentUser);
+  //console.log("props.currentUser", props.currentUser);
 
 
   return (
@@ -215,7 +232,9 @@ export default function IndexNavbar(props) {
                       onFocus={(e) => setEmailFocus(true)}
                       onBlur={(e) => setEmailFocus(false)}
                       onChange={(e) => setEmail(e.target.value)}
+                      style={{ borderColor: errorMessage && errorMessage.includes('User') ? 'red' : '' }}
                     />
+                    
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -235,8 +254,14 @@ export default function IndexNavbar(props) {
                       onFocus={(e) => setPasswordFocus(true)}
                       onBlur={(e) => setPasswordFocus(false)}
                       onChange={(e) => setPassword(e.target.value)}
+                      style={{ borderColor: errorMessage && errorMessage.includes('Password cannot') ? 'red' : '' }}
                     />
                   </InputGroup>
+                  {errorMessage !== null && (
+                    <div className="text-left text-muted">
+                      <small style={{ color: 'red' }}>{errorMessage}</small>
+                    </div>
+                  )}
                 </FormGroup>
                 <FormGroup check className="mt-3">
                   <Label check>

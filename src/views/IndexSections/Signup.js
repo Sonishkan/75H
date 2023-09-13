@@ -17,8 +17,7 @@
 */
 import React from "react";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
-import { Auth, Hub } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 // reactstrap components
 import {
   Button,
@@ -28,12 +27,10 @@ import {
   CardFooter,
   CardImg,
   CardTitle,
-  Label,
   FormGroup,
   Form,
   Input,
   Modal,
-  formModal,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
@@ -54,41 +51,43 @@ export default function Signup() {
   const [email, setEmail] = React.useState("");
   const [confirmCode, setConfirmCode] = React.useState("");
   const [confirmFocus, setConfirmFocus] = React.useState(false);
-
-  function listenToAutoSignInEvent() {
-    Hub.listen('auth', ({ payload }) => {
-      const { event } = payload;
-      if (event === 'autoSignIn') {
-        const user = payload.data;
-        // assign user
-      } else if (event === 'autoSignIn_failure') {
-        // redirect to sign in page
-      }
-    })
-  }
+  
+  const [errorMessage, setErrorMessage] = React.useState();
 
   let handleSubmit = async function (event) {
     try {
 
-        //event.preventDefault();
+        event.preventDefault();
         //let response = await Auth.signIn(email, password);
         //console.log(response, "response");
         { /* if the response is successful, then redirect to the profile page */ }
-        console.log(email, confirmCode);
+        //console.log(email, confirmCode);
         let response = await Auth.confirmSignUp(email, confirmCode);
-        
+        setErrorMessage(null);
 
         
     } catch (error) {
         console.log(error, "error signing in");
         //alert("Incorrect username or password");
+        if (error.message && error.message.includes(':')) {
+          const errorMessageParts = error.message.split(':');
+          if (errorMessageParts.length > 1) {
+            setErrorMessage(errorMessageParts[1].trim());
+          }
+        } else {
+          setErrorMessage(error.message);
+        }
+        
     }
   };
+
+
+
   let handleRegister = async function (event) {
     try {
     
-    console.log(fullname, password, email);
-    
+    //console.log(fullname, password, email);
+    event.preventDefault();
     const {user} = await Auth.signUp({
       username: email,
       password: password
@@ -98,10 +97,22 @@ export default function Signup() {
       },
 
     });
+    setErrorMessage(null);
     setFormModal(true);
-    console.log(user, 'hey');
+    console.log(user, 'logged in');
     } catch (error) {
-      alert(error.message);
+      //alert(error.message);
+
+      if (error.message && error.message.includes(':')) {
+        const errorMessageParts = error.message.split(':');
+        if (errorMessageParts.length > 1) {
+          setErrorMessage(errorMessageParts[1].trim());
+        }
+      } else {
+        setErrorMessage(error.message);
+      }
+
+      
     }
 
 
@@ -160,12 +171,14 @@ export default function Signup() {
                       onFocus={(e) => setFullNameFocus(true)}
                       onBlur={(e) => setFullNameFocus(false)}
                       onChange={(e) => setFullName(e.target.value)}
+                      
                     />
                   </InputGroup>
                   <InputGroup
                     className={classnames({
                       "input-group-focus": emailFocus,
                     })}
+                    
                   >
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
@@ -178,6 +191,7 @@ export default function Signup() {
                       onFocus={(e) => setEmailFocus(true)}
                       onBlur={(e) => setEmailFocus(false)}
                       onChange={(e) => setEmail(e.target.value)}
+                      style={{ borderColor: errorMessage && errorMessage.includes('Username') ? 'red' : '' }}
                     />
                   </InputGroup>
                   <InputGroup
@@ -196,10 +210,11 @@ export default function Signup() {
                       onFocus={(e) => setPasswordFocus(true)}
                       onBlur={(e) => setPasswordFocus(false)}
                       onChange={(e) => setPassword(e.target.value)}
+                      style={{ borderColor: errorMessage && errorMessage.includes('Password') ? 'red' : '' }}
                       
                     />
                   </InputGroup>
-                  <FormGroup check className="text-left">
+                  {/* <FormGroup check className="text-left">
                     <Label check>
                       <Input type="checkbox" />
                       <span className="form-check-sign" />I agree to the{" "}
@@ -208,9 +223,17 @@ export default function Signup() {
                       </a>
                       .
                     </Label>
-                  </FormGroup>
+                  </FormGroup> */}
+
+                  {errorMessage !== null && (
+                    <div className="text-left text-muted">
+                      <small style={{ color: 'red' }}>{errorMessage}</small>
+                    </div>
+                  )}
                 </Form>
+                
               </CardBody>
+              
               <CardFooter>
                 <Button className="btn-round" color="primary" size="lg" onClick={handleRegister}>
                   Get Started
@@ -220,18 +243,16 @@ export default function Signup() {
           </Col>
         </Row>
 
-
+                      {/* Modal for Confirm Code */}
         <Modal
             modalClassName="modal-black"
             isOpen={formModal}
-            toggle={() => setFormModal(false)}
+            
           >
             <div className="modal-header justify-content-center">
-              <button className="close" onClick={() => setFormModal(false)}>
-                <i className="tim-icons icon-simple-remove text-white" />
-              </button>
+              
               <div className="text-muted text-center ml-auto mr-auto">
-                <h3 className="mb-0">Sign in</h3>
+                <h3 className="mb-0">Confirm Code</h3>
               </div>
             </div>
             <div className="modal-body">
@@ -274,8 +295,14 @@ export default function Signup() {
                       onFocus={(e) => setConfirmFocus(true)}
                       onBlur={(e) => setConfirmFocus(false)}
                       onChange={(e) => setConfirmCode(e.target.value)}
+                      style={{ borderColor: errorMessage && errorMessage.includes('code') ? 'red' : '' }}
                     />
                   </InputGroup>
+                  {errorMessage !== null && (
+                    <div className="text-left text-muted">
+                      <small style={{ color: 'red' }}>{errorMessage}</small>
+                    </div>
+                  )}
                 </FormGroup>
                 
                 <div className="text-center">

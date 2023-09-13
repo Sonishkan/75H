@@ -28,22 +28,14 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Label,
-  FormGroup,
-  Form,
-  Input,
-  FormText,
   NavItem,
   NavLink,
   Nav,
-  Table,
   TabContent,
-  TabPane,
   Container,
   Row,
   Col,
   UncontrolledTooltip,
-  UncontrolledCarousel,
 } from "reactstrap";
 
 
@@ -93,12 +85,16 @@ export default function ProfilePage(props) {
       document.body.classList.toggle("profile-page");
     };
   }, []);
+
+
     const handleButtonClick = () => {
       console.log("Button clicked!, tabs = ", tabs);
       // this is used change the setting of how the challenge is completed
       // if the user is on the "All" tab, then if one item isnt checked off then the whole challenge restarts
       // if the user is on the "Individual" tab, then if one item isnt checked off then only that item restarts
     };
+
+
   return (
     <>
       <div className="wrapper">
@@ -214,9 +210,9 @@ export default function ProfilePage(props) {
             <Row className="justify-content-between">
               <Col md="2">
                 
-              
+                          {/* Buttons for challenge attributes */}
                 <div className="btn-wrapper pt-4">
-                <Row md="1">
+                  <Row md="1">
                     <Button
                       className="btn-simple"
                       color="primary"
