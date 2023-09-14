@@ -33,26 +33,29 @@ const carouselItems = [
   {
     src: require("../../assets/img/before_after/1.png"),
     altText: "Slide 1",
-    caption: "",
+    caption: "https://www.neverjordinary.com/post/my-review-of-75-hard-by-andy-frisella-with-tips",
+    title: "Before",
   },
   {
     src: require("../../assets/img/before_after/2.png"),
     altText: "Slide 2",
-    caption: "",
+    caption: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fandyfrisella.com%2Fpages%2F75hard-info&psig=AOvVaw1lm5S3IRVgc27oOgtXxXIW&ust=1694722887808000&source=images&cd=vfe&opi=89978449&ved=0CA8QjRxqFwoTCLjqye-0qIEDFQAAAAAdAAAAABAR",
+    title: "Before",
   },
   {
     src: require("../../assets/img/before_after/3.png"),
     altText: "Slide 3",
-    caption: "",
+    caption: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.tomaskeenan.com%2F75-hard-a-life-changing-challenge&psig=AOvVaw1lm5S3IRVgc27oOgtXxXIW&ust=1694722887808000&source=images&cd=vfe&opi=89978449&ved=0CA8QjRxqFwoTCLjqye-0qIEDFQAAAAAdAAAAABAE",
+    title: "Before",
   },
 ];
 
 export default function JavaScript() {
-  const [demoModal, setDemoModal] = React.useState(false);
-  const [miniModal, setMiniModal] = React.useState(false);
-  const [formModal, setFormModal] = React.useState(false);
-  const [emailFocus, setEmailFocus] = React.useState(false);
-  const [passwordFocus, setPasswordFocus] = React.useState(false);
+  // const [demoModal, setDemoModal] = React.useState(false);
+  // const [miniModal, setMiniModal] = React.useState(false);
+  // const [formModal, setFormModal] = React.useState(false);
+  // const [emailFocus, setEmailFocus] = React.useState(false);
+  // const [passwordFocus, setPasswordFocus] = React.useState(false);
   return (
     <div className="section section-javascript" id="javascriptComponents">
       <img alt="..." className="path" src={require("../../assets/img/path5.png")} />

@@ -90,8 +90,11 @@ export default function Signup() {
     event.preventDefault();
     const {user} = await Auth.signUp({
       username: email,
-      password: password
-      ,userAttributes: {fullname},
+      password: password,
+      attributes: {
+        name: fullname,
+        picture: 'https://backend.vistan-brillen.de/storage/files/images/marken/changeme/header/changeme-logo-header.jpg',
+      },
       autoSignIn: {
         enabled: true,
       },
@@ -225,11 +228,11 @@ export default function Signup() {
                     </Label>
                   </FormGroup> */}
 
-                  {errorMessage !== null && (
-                    <div className="text-left text-muted">
-                      <small style={{ color: 'red' }}>{errorMessage}</small>
-                    </div>
-                  )}
+                {errorMessage !== null && !formModal && (
+                  <div className="text-left text-muted">
+                    <small style={{ color: 'red' }}>{errorMessage}</small>
+                  </div>
+                )}
                 </Form>
                 
               </CardBody>
