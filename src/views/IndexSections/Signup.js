@@ -45,12 +45,14 @@ export default function Signup() {
   const [fullNameFocus, setFullNameFocus] = React.useState(false);
   const [emailFocus, setEmailFocus] = React.useState(false);
   const [passwordFocus, setPasswordFocus] = React.useState(false);
+  const [dobFocus, setDOBFocus] = React.useState(false);
   const [formModal, setFormModal] = React.useState(false);
-  const [fullname, setFullName] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [confirmCode, setConfirmCode] = React.useState("");
+  const [fullname, setFullName] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [confirmCode, setConfirmCode] = React.useState();
   const [confirmFocus, setConfirmFocus] = React.useState(false);
+  const [dob, setDOB] = React.useState(null);
   
   const [errorMessage, setErrorMessage] = React.useState();
 
@@ -94,6 +96,7 @@ export default function Signup() {
       attributes: {
         name: fullname,
         picture: 'https://backend.vistan-brillen.de/storage/files/images/marken/changeme/header/changeme-logo-header.jpg',
+        birthdate: dob,
       },
       autoSignIn: {
         enabled: true,
@@ -214,6 +217,28 @@ export default function Signup() {
                       onBlur={(e) => setPasswordFocus(false)}
                       onChange={(e) => setPassword(e.target.value)}
                       style={{ borderColor: errorMessage && errorMessage.includes('Password') ? 'red' : '' }}
+                      
+                    />
+                  </InputGroup>
+                  <InputGroup
+                    className={classnames({
+                      "input-group-focus": passwordFocus,
+                    })}
+                  >
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="tim-icons date" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      type={dobFocus === true ? 'date' : 'text'}
+                      placeholder="Date of Birth"
+                      onFocus={() => setDOBFocus(true)}
+                      onBlur={() => setDOBFocus(false)}
+                      onChange={(e) => setDOB(e.target.value)}
+                      style={{
+                        borderColor: errorMessage && errorMessage.includes('birthdate') ? 'red' : '',
+                      }}
                       
                     />
                   </InputGroup>
